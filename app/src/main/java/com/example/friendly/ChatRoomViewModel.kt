@@ -5,17 +5,15 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 
 class MessageViewModel: ViewModel() {
-    private val _messageHistoryData = getMessageHistoryData().toMutableStateList()
-    val messageHistoryData: List<MessageData>
-        get() = _messageHistoryData
+    private val _groupMessages = getMessageHistoryData().toMutableStateList()
+    val groupMessages: List<MessageData>
+        get() = _groupMessages
 
-    fun sendMessage(inputValue: String) {
-
-    }
+    fun sendMessage(inputValue: String) {}
 }
 
 private fun getMessageHistoryData(): List<MessageData>{
-    return messageHistory
+    return messageList
 }
 
 data class MessageData(
@@ -24,7 +22,7 @@ data class MessageData(
     val message: String
 )
 
-val messageHistory = listOf(
+val messageList = listOf(
     MessageData(R.drawable.friend_1, 1, "There are 5 tasks remaining."),
     MessageData(R.drawable.member_1, 2, "Let's go!"),
     MessageData(R.drawable.friend_2, 3, "You forgot to record your breakfast")

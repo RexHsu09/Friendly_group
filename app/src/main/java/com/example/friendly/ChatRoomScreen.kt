@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.friendly.ui.theme.Brown100
@@ -115,7 +114,7 @@ fun ChatRoomScreen(
     modifier: Modifier = Modifier
 ) {
     var inputValue by remember { mutableStateOf("") }
-    fun sendMessage() { // 3
+    fun sendMessage() {
         messageViewModel.sendMessage(inputValue)
         inputValue = ""
     }
@@ -133,7 +132,7 @@ fun ChatRoomScreen(
             modifier = Modifier.align(Alignment.TopCenter)
         ) {
             TopBar(onClose = {},"Group A")
-            MessageList(messageViewModel.messageHistoryData)
+            MessageList(messageViewModel.groupMessages)
         }
         Row(modifier = Modifier.align(Alignment.BottomCenter)){
             TextField(
@@ -143,12 +142,12 @@ fun ChatRoomScreen(
                     Text(text ="Write a message...")
                 }
             )
-            Button( // 5
+            Button(
                 modifier = Modifier.height(56.dp),
                 onClick = { sendMessage() },
                 enabled = inputValue.isNotBlank(),
             ) {
-                Icon( // 6
+                Icon(
                     imageVector = Icons.Default.Send,
                     contentDescription = null
                 )

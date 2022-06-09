@@ -1,7 +1,6 @@
 package com.example.friendly
 
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -9,27 +8,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.friendly.ui.theme.Brown400
-import com.example.friendly.ui.theme.FriendlyTheme
-import com.example.friendly.ui.theme.Orange400
 import com.example.friendly.ui.theme.Yellow400
 
 @Composable
 fun MemberCard(
-    userViewModel: UserViewModel,
+    groupViewModel: GroupViewModel,
     memberData: UserData,
     modifier: Modifier = Modifier
 ) {
@@ -41,7 +33,7 @@ fun MemberCard(
         modifier = Modifier
             .width(350.dp)
             .padding(8.dp)
-            .clickable {}
+            .clickable {/* TODO */} //進入Profile畫面的Navigation
     ) {
         Box {
             Image(
@@ -53,7 +45,7 @@ fun MemberCard(
                     .align(Alignment.CenterEnd)
                     .height(50.dp)
                     .offset(x = (-16).dp)
-                    .clickable { userViewModel.remind(memberData) }
+                    .clickable { groupViewModel.remind(memberData) }
             )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -96,14 +88,13 @@ fun MemberCard(
 
 @Composable
 fun MemberList(
-    userViewModel: UserViewModel = viewModel(),
-    messageViewModel: MessageViewModel = viewModel(),
+    groupViewModel: GroupViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = Modifier.padding(8.dp)) {
-        items(userViewModel.memberDataList) { item ->
+        items(groupViewModel.memberDataList) { item ->
             MemberCard(
-                userViewModel = userViewModel,
+                groupViewModel = groupViewModel,
                 memberData = item
             )
         }
@@ -112,7 +103,7 @@ fun MemberList(
 
 @Composable
 fun MemberScreen(
-    userViewModel: UserViewModel = viewModel(),
+    groupViewModel: GroupViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     Box {
@@ -128,18 +119,18 @@ fun MemberScreen(
             modifier = Modifier.align(Alignment.TopCenter)
         ) {
             TopBar(
-                onClose = {},
+                onClose = {/* TODO */}, //關閉視窗的navigation
                 title = "Members"
             )
-            MemberList(userViewModel)
+            MemberList(groupViewModel)
         }
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
-@Composable
-fun MemberScreenPreview() {
-    FriendlyTheme {
-        MemberScreen()
-    }
-}
+//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+//@Composable
+//fun MemberScreenPreview() {
+//    FriendlyTheme {
+//        MemberScreen()
+//    }
+//}

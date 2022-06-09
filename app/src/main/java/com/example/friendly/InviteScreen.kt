@@ -20,10 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.friendly.ui.theme.Gray200
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.friendly.ui.theme.FriendlyTheme
+import com.example.friendly.ui.theme.Orange200
 import kotlinx.coroutines.selects.select
 
 @Composable
@@ -92,10 +94,12 @@ fun SearchFriendGrid(
 ) {
     LazyColumn(modifier = Modifier.padding(8.dp)) {
         items(userViewModel.friendDataList) { item ->
-            FriendCard(
-                userViewModel = userViewModel,
-                userData = item
-            )
+            if (item.name.contains(userViewModel.searchKey)) {
+                FriendCard(
+                    userViewModel = userViewModel,
+                    userData = item
+                )
+            }
         }
     }
 }
@@ -105,6 +109,39 @@ fun SearchFriendGrid() {
     FriendlyTheme {
         SearchFriendGrid()
     }
+}
+
+@Composable
+fun InviteSearchBar(
+    userViewModel: UserViewModel,
+    modifier: Modifier = Modifier
+) {
+    var text by remember {
+        mutableStateOf("")
+    }
+    TextField(
+        value = text,
+        onValueChange = {
+            text = it
+            userViewModel.setSearchKey(it)
+                        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null
+            )
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colors.surface
+        ),
+        placeholder = {
+            Text(stringResource(R.string.placeholder_search))
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 30.dp)
+            .padding(16.dp)
+    )
 }
 
 @Composable
@@ -155,7 +192,7 @@ fun InvitePage(
                 thickness = 2.dp,
                 modifier = Modifier.absolutePadding(left = 16.dp, right = 16.dp)
             )
-            SearchBar()
+            InviteSearchBar(userViewModel)
             Divider(
                 color = Color.Gray,
                 thickness = 2.dp,
@@ -163,7 +200,36 @@ fun InvitePage(
             )
             SearchFriendGrid(userViewModel)
         }
-
+        Box(
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(y = (-30).dp)
+        ) {
+            Surface(
+                color = Orange200,
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier
+                    .clickable {} //Navigate到SettingScreen
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = MaterialTheme.shapes.medium
+                    )
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .width(220.dp)
+                        .heightIn(40.dp)
+                ) {
+                    Text(
+                        text = "Next",
+                        style = MaterialTheme.typography.h5,
+                        modifier = modifier
+                    )
+                }
+            }
+        }
     }
 }
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)

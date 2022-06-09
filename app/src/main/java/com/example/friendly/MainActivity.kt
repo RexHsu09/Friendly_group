@@ -11,12 +11,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FriendlyTheme {
-//                GroupScreenFull()
+                GroupSelectScreen()
 //                InvitePage()
 //                SettingsScreen()
-//                InsideGroupScreen()
+//                GroupScreen()
 //                ChatRoomScreen()
 //                MemberScreen()
+//                TasksScreen()
 //                ProfileScreen(memberData = memberDataList[0])
             }
         }

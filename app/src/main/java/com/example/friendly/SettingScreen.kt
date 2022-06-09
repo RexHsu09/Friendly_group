@@ -86,7 +86,7 @@ fun ConfirmMemberGrid(
         horizontalArrangement = Arrangement.spacedBy(32.dp),
         modifier = modifier
     ) {
-        items(userViewModel.selectedDataList) { item ->
+        items(userViewModel.selectedFriends) { item ->
             MemberBigCard(
                 name = item.name,
                 profile = item.profile,
@@ -95,22 +95,12 @@ fun ConfirmMemberGrid(
         }
     }
 }
-//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
-//@Composable
-//fun ConfirmMemberGridPreview() {
-//    FriendlyTheme {
-//        ConfirmMemberGrid()
-//    }
-//}
 
 @Composable
 fun Settings(
     userViewModel: UserViewModel,
     modifier: Modifier = Modifier
 ) {
-    var inputName by remember { mutableStateOf("") }
-    var inputMaximum by remember { mutableStateOf("") }
-
     Box(modifier = modifier) {
         Image(
             painter = painterResource(R.drawable.background),
@@ -155,8 +145,8 @@ fun Settings(
                 modifier = Modifier.absolutePadding(left = 16.dp, right = 16.dp)
             )
             TextField(
-                value = inputName,
-                onValueChange = { inputName = it },
+                value = userViewModel.groupName,
+                onValueChange = { userViewModel.groupName = it },
                 placeholder = {
                     Text("Group Name")
                 },
@@ -171,8 +161,8 @@ fun Settings(
                 modifier = Modifier.absolutePadding(left = 16.dp, right = 16.dp)
             )
             TextField(
-                value = inputMaximum,
-                onValueChange = { inputMaximum = it },
+                value = userViewModel.setMaximum,
+                onValueChange = { userViewModel.setMaximum = it },
                 placeholder = {
                     Text("Maximum Number of Members")
                 },
@@ -219,7 +209,7 @@ fun SettingsScreen(
             color = Orange200,
             shape = MaterialTheme.shapes.small,
             modifier = Modifier
-                .clickable {}
+                .clickable { userViewModel.createGroup() }
                 .shadow(
                     elevation = 8.dp,
                     shape = MaterialTheme.shapes.medium

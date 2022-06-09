@@ -59,7 +59,7 @@ fun TasksButton(
 }
 
 @Composable
-fun FriendsButton(
+fun MembersButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -83,7 +83,7 @@ fun FriendsButton(
                     modifier = Modifier.size(37.dp)
                 )
                 Text(
-                    text = "Friends",
+                    text = "Members",
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier.offset(y = (-10).dp)
                 )
@@ -91,13 +91,6 @@ fun FriendsButton(
         }
     }
 }
-//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
-//@Composable
-//fun TopButton() {
-//    FriendlyTheme {
-//        TopButton("Friends", R.drawable.friend_button)
-//    }
-//}
 
 @Composable
 fun GroupName(
@@ -122,17 +115,10 @@ fun GroupName(
         }
     }
 }
-//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
-//@Composable
-//fun GroupNamePreview() {
-//    FriendlyTheme {
-//        GroupName(R.string.GroupA_name)
-//    }
-//}
 
 @Composable
 fun GroupTopBar(
-    insideGroupViewModel: InsideGroupViewModel,
+    groupViewModel: GroupViewModel,
     @StringRes name: Int,
     modifier: Modifier = Modifier
 ) {
@@ -149,27 +135,19 @@ fun GroupTopBar(
             modifier = Modifier.fillMaxWidth()
         ) {
             GroupName(name)
-            FriendsButton(onClick = { })
-            TasksButton(onClick = { })
+            MembersButton(onClick = { })
+            TasksButton(onClick = { groupViewModel.updateTasks() })
         }
     }
 }
 
-//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
-//@Composable
-//fun TopBarPreview() {
-//    FriendlyTheme {
-//        GroupTopBar(R.string.GroupA_name)
-//    }
-//}
-
 @Composable
 fun MonstersInParkRow(
-    insideGroupViewModel: InsideGroupViewModel = viewModel(),
+    groupViewModel: GroupViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     LazyRow {
-        items(insideGroupViewModel.monstersInPark) { item ->
+        items(groupViewModel.monstersInPark) { item ->
             Image(
                 painter = painterResource(item.picture),
                 contentDescription = null,
@@ -231,24 +209,6 @@ fun ChatroomButton(
             modifier = Modifier.size(70.dp)
         )
     }
-//    Box(
-//        modifier = Modifier.size(60.dp),
-//        contentAlignment = Alignment.TopEnd
-//    ) {
-//        Box(
-//            contentAlignment = Alignment.Center,
-//            modifier = Modifier
-//        ) {
-//            Image(
-//                painter = painterResource(R.drawable.notification),
-//                contentDescription = null
-//            )
-//            Text(
-//                text = stringResource(notificationNumber),
-//                style = MaterialTheme.typography.h6
-//            )
-//        }
-//    }
 }
 
 @Composable
@@ -363,10 +323,9 @@ fun NewMonsterCard(
 
 @Composable
 fun InsideGroupScreen(
-    insideGroupViewModel: InsideGroupViewModel = viewModel(),
+    groupViewModel: GroupViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
-    val progress = 0.7f
     var showCollectCard by remember {
         mutableStateOf(false)
     }
@@ -379,7 +338,7 @@ fun InsideGroupScreen(
             modifier = Modifier.fillMaxSize()
         )
         GroupTopBar(
-            insideGroupViewModel = insideGroupViewModel,
+            groupViewModel = groupViewModel,
             name = R.string.GroupA_name,
             modifier = Modifier.align(Alignment.TopCenter)
         )
@@ -393,8 +352,8 @@ fun InsideGroupScreen(
                     onClick = {}
                 )
             }
-            MonstersInParkRow(insideGroupViewModel)
-            Egg(readyToHatch = insideGroupViewModel.readyToHatch)
+            MonstersInParkRow(groupViewModel)
+            Egg(readyToHatch = groupViewModel.readyToHatch)
         }
         Column(
             horizontalAlignment = Alignment.End,
@@ -407,10 +366,10 @@ fun InsideGroupScreen(
             }
             HatchProgressBar(
                 onClick = {
-                    if(insideGroupViewModel.readyToHatch) insideGroupViewModel.hatch()
+                    if(groupViewModel.readyToHatch) groupViewModel.hatch()
                     showCollectCard = true
                 },
-                progress = progress,
+                progress = groupViewModel.hatchProgress,
                 modifier = Modifier.offset(y = 5.dp)
             )
         }
@@ -418,7 +377,7 @@ fun InsideGroupScreen(
             if (showCollectCard) {
                 NewMonsterCard(
                     onClickCollect = { showCollectCard = false },
-                    monsterData = insideGroupViewModel.newHatchedMonster,
+                    monsterData = groupViewModel.newHatchedMonster,
                 )
             }
         }

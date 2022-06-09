@@ -27,51 +27,51 @@ import com.example.friendly.ui.theme.FriendlyTheme
 import com.example.friendly.ui.theme.Gray200
 import com.example.friendly.ui.theme.Orange200
 
-@Composable
-fun RecordListShow(modifier: Modifier = Modifier) {
-    LazyColumn(
-        modifier = Modifier
-            .padding(8.dp)
-            .height(160.dp)
-    ) {
-        items(recordList) { item ->
-            recordCard(recordData = item)
-        }
-    }
-}
+//@Composable
+//fun RecordListShow(modifier: Modifier = Modifier) {
+//    LazyColumn(
+//        modifier = Modifier
+//            .padding(8.dp)
+//            .height(160.dp)
+//    ) {
+//        items(recordList) { item ->
+//            recordCard(recordData = item)
+//        }
+//    }
+//}
 
-@Composable
-fun recordCard(
-    recordData: RecordData,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        backgroundColor = Gray200,
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
-            .width(300.dp)
-            .padding(4.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text(
-                text = recordData.time,
-                style = MaterialTheme.typography.h5
-            )
-            Text(
-                text = recordData.description,
-                style = MaterialTheme.typography.h5
-            )
-            Text(
-                text = "${recordData.incomeOrExpense}元",
-                style = MaterialTheme.typography.h5
-            )
-        }
-    }
-}
+//@Composable
+//fun recordCard(
+//    recordData: RecordData,
+//    modifier: Modifier = Modifier
+//) {
+//    Card(
+//        backgroundColor = Gray200,
+//        shape = MaterialTheme.shapes.medium,
+//        modifier = Modifier
+//            .width(300.dp)
+//            .padding(4.dp)
+//    ) {
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.SpaceAround,
+//            modifier = Modifier.padding(8.dp)
+//        ) {
+//            Text(
+//                text = recordData.time,
+//                style = MaterialTheme.typography.h5
+//            )
+//            Text(
+//                text = recordData.description,
+//                style = MaterialTheme.typography.h5
+//            )
+//            Text(
+//                text = "${recordData.incomeOrExpense}元",
+//                style = MaterialTheme.typography.h5
+//            )
+//        }
+//    }
+//}
 
 
 
@@ -83,8 +83,9 @@ fun OwnedMonsterCard(
     Card(
         shape = CircleShape,
         backgroundColor = Gray200,
+        elevation = 8.dp,
         modifier = Modifier
-            .absolutePadding(left = 48.dp)
+            .absolutePadding(left = 8.dp)
     ) {
         Box {
             Image(
@@ -93,7 +94,7 @@ fun OwnedMonsterCard(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(8.dp)
-                    .size(80.dp)
+                    .size(120.dp)
             )
         }
     }
@@ -121,12 +122,12 @@ fun ProfileCard(
         backgroundColor = Brown100,
         modifier = Modifier
             .width(350.dp)
-            .height(700.dp)
+            .height(550.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
                 modifier = Modifier.align(Alignment.TopCenter)
             ) {
                 Image(
@@ -140,14 +141,15 @@ fun ProfileCard(
                 Text(
                     text = userData.name,
                     style = MaterialTheme.typography.h5.copy(
-                        fontSize = 20.sp,
+                        fontSize = 30.sp,
                         fontWeight = FontWeight.Bold)
                 )
                 Text(
                     text = "任務完成數: ${userData.completedTasksNum}",
-                    style = MaterialTheme.typography.h5
+                    style = MaterialTheme.typography.h5.copy(
+                        fontSize = 25.sp
+                    )
                 )
-                RecordListShow()
                 OwnedMonsterList()
             }
             Card(
@@ -197,10 +199,10 @@ fun ProfileScreen(
     }
 }
 
-//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
-//@Composable
-//fun ProfileScreenPreview() {
-//    FriendlyTheme {
-//        ProfileScreen(memberDataList[0])
-//    }
-//}
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+@Composable
+fun ProfileScreenPreview() {
+    FriendlyTheme {
+        ProfileScreen(memberData = memberDataList[0])
+    }
+}

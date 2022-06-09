@@ -133,7 +133,6 @@ fun GroupScreenFull(
                 modifier = modifier.fillMaxWidth()
             )
             GroupScreen(groupSelectViewModel)
-            BottomMenu(modifier = Modifier.align(Alignment.BottomCenter))
         }
     }
 }

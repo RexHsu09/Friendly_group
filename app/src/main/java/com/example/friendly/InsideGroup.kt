@@ -413,7 +413,6 @@ fun InsideGroupScreen(
                 progress = progress,
                 modifier = Modifier.offset(y = 5.dp)
             )
-            BottomMenu()
         }
         Box(modifier = Modifier.align(Alignment.Center)){
             if (showCollectCard) {

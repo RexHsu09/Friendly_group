@@ -1,0 +1,175 @@
+package com.example.friendly
+
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.friendly.ui.theme.Gray200
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.friendly.ui.theme.FriendlyTheme
+import kotlinx.coroutines.selects.select
+
+@Composable
+fun FriendCard(
+    userViewModel: UserViewModel,
+    userData: UserData,
+    modifier: Modifier = Modifier
+) {
+    var selected by remember{
+        mutableStateOf(false)
+    }
+
+    Surface(
+        color = Gray200,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = MaterialTheme.shapes.medium
+            ),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Image(
+                painter = painterResource(userData.profile),
+                contentDescription = null,
+                modifier = Modifier.size(48.dp)
+            )
+            Text(
+                text = userData.name,
+                style = MaterialTheme.typography.h5,
+                modifier = modifier
+            )
+            RadioButton(
+                selected = selected,
+                onClick = {
+                    selected = !selected
+                    userViewModel.select(userData, selected)
+                }
+            )
+        }
+    }
+}
+//@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+//@Composable
+//fun FriendCardPreview() {
+//    FriendlyTheme {
+//        FriendCard(
+//            name = R.string.friend_1,
+//            profile = R.drawable.friend_1,
+//            onItemClick = {}
+//        )
+//    }
+//}
+
+
+@Composable
+fun SearchFriendGrid(
+    userViewModel: UserViewModel = viewModel(),
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(modifier = Modifier.padding(8.dp)) {
+        items(userViewModel.friendDataList) { item ->
+            FriendCard(
+                userViewModel = userViewModel,
+                userData = item
+            )
+        }
+    }
+}
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+@Composable
+fun SearchFriendGrid() {
+    FriendlyTheme {
+        SearchFriendGrid()
+    }
+}
+
+@Composable
+fun InvitePage(
+    userViewModel: UserViewModel = viewModel(),
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier) {
+        Image(
+            painter = painterResource(R.drawable.background),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clickable { }
+                        .size(35.dp)
+                )
+                Text(
+                    text = "Invite",
+                    style = MaterialTheme.typography.h4
+                )
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clickable { }
+                        .size(35.dp)
+                )
+            }
+            Divider(
+                color = Color.Gray,
+                thickness = 2.dp,
+                modifier = Modifier.absolutePadding(left = 16.dp, right = 16.dp)
+            )
+            SearchBar()
+            Divider(
+                color = Color.Gray,
+                thickness = 2.dp,
+                modifier = Modifier.absolutePadding(left = 16.dp, right = 16.dp)
+            )
+            SearchFriendGrid(userViewModel)
+        }
+
+    }
+}
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+@Composable
+fun InvitePagePreview() {
+    FriendlyTheme {
+        InvitePage()
+    }
+}
